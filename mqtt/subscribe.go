@@ -7,8 +7,8 @@ import (
 	"time"
 
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/weatherman-org/telemetry/data"
 	db "github.com/weatherman-org/telemetry/db/sqlc"
+	"github.com/weatherman-org/telemetry/weatherdata"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -17,7 +17,7 @@ func Subscribe(session Session, store db.Querier) error {
 		messageValue := message.Payload()
 
 		// * attempting unmarshal of message
-		var weatherData data.WeatherTelemetry
+		var weatherData weatherdata.WeatherTelemetry
 		if err := proto.Unmarshal(messageValue, &weatherData); err != nil {
 			log.Println("unable to unmarshal message:", err)
 			log.Println("message was:", string(messageValue))

@@ -6,9 +6,11 @@ package db
 
 import (
 	"context"
+	"time"
 )
 
 type Querier interface {
+	GetWeatherTelemetry(ctx context.Context, millis time.Time) ([]Weathertelemetry, error)
 	InsertWeatherTelemetry(ctx context.Context, arg InsertWeatherTelemetryParams) (Weathertelemetry, error)
 }
 

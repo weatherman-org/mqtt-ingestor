@@ -15,6 +15,32 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/data/csv": {
+            "get": {
+                "description": "Get a CSV formatted file of all the MQTT data",
+                "produces": [
+                    "text/csv"
+                ],
+                "tags": [
+                    "data"
+                ],
+                "summary": "Get a CSV formatted file of all the MQTT data",
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
         "/publish": {
             "post": {
                 "description": "Mock an MQTT weather publish, fields are formatted as Protobuf and sent via the MQTT broker",
@@ -42,12 +68,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/util.ErrorModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/util.ErrorModel"
                         }

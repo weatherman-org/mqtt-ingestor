@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/weatherman-org/telemetry/data"
 	"github.com/weatherman-org/telemetry/util"
+	"github.com/weatherman-org/telemetry/weatherdata"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -19,14 +19,13 @@ type publishModel struct {
 	WaterAmount   float64 `json:"water_amount" example:"10"`
 }
 
-// create godoc
+// mqttPublish godoc
 // @Summary      Mock an MQTT weather publish
 // @Description  Mock an MQTT weather publish, fields are formatted as Protobuf and sent via the MQTT broker
 // @Tags         mqtt
 // @Param        request-body body publishModel true "json"
 // @Success      200  {object} publishModel
 // @Failure      400  {object} util.ErrorModel
-// @Failure      500  {object} util.ErrorModel
 // @Router       /publish [post]
 func (s *Server) mqttPublish(w http.ResponseWriter, r *http.Request) {
 	var requestPayload publishModel
@@ -43,7 +42,7 @@ func (s *Server) mqttPublish(w http.ResponseWriter, r *http.Request) {
 	fillDefaultIfZero(&requestPayload.Pressure)
 	fillDefaultIfZero(&requestPayload.WaterAmount)
 
-	weatherProto := &data.WeatherTelemetry{
+	weatherProto := &weatherdata.WeatherTelemetry{
 		Timestamp:     uint64(time.Now().UnixMilli()),
 		Temperature:   requestPayload.Temperature,
 		Humidity:      requestPayload.Humidity,

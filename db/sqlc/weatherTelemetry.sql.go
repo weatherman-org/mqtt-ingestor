@@ -10,6 +10,42 @@ import (
 	"time"
 )
 
+const getWeatherTelemetry = `-- name: GetWeatherTelemetry :many
+SELECT millis, temperature, humidity, windspeed, winddirection, pressure, wateramount
+FROM weatherTelemetry
+WHERE millis > $1
+ORDER BY millis ASC
+LIMIT 100
+`
+
+func (q *Queries) GetWeatherTelemetry(ctx context.Context, millis time.Time) ([]Weathertelemetry, error) {
+	rows, err := q.db.Query(ctx, getWeatherTelemetry, millis)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Weathertelemetry{}
+	for rows.Next() {
+		var i Weathertelemetry
+		if err := rows.Scan(
+			&i.Millis,
+			&i.Temperature,
+			&i.Humidity,
+			&i.Windspeed,
+			&i.Winddirection,
+			&i.Pressure,
+			&i.Wateramount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const insertWeatherTelemetry = `-- name: InsertWeatherTelemetry :one
 INSERT INTO weatherTelemetry(
         millis,

@@ -28,6 +28,7 @@ func (s *Server) addRoutes() {
 	)
 
 	router.Post("/publish", s.mqttPublish)
+	router.Mount("/data", s.dataController.Routes())
 	router.Mount("/swagger", httpSwagger.WrapHandler)
 
 	s.router = router
