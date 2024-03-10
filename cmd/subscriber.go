@@ -1,24 +1,27 @@
 package cmd
 
 import (
+	"encoding/json"
 	"log"
 
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/weathermamn-org/mqtt-ingestor/data"
 	"github.com/weathermamn-org/mqtt-ingestor/mqtt"
-	"github.com/weathermamn-org/mqtt-ingestor/util"
+	"google.golang.org/protobuf/proto"
 )
 
-func Subscribe(config util.Config) error {
-	session, err := setup(config)
-	if err != nil {
-		return err
-	}
-
+func Subscribe(session mqtt.Session) error {
 	return session.Subscribe("topic/telemetry", func(client paho.Client, message paho.Message) {
-		log.Println(string(message.Payload()))
-	})
-}
+		messageValue := message.Payload()
 
-func setup(config util.Config) (mqtt.Session, error) {
-	return mqtt.NewSession(config.MQTT_ENDPOINT, config.MQTT_USERNAME, config.MQTT_PASSWORD)
+		// * attempting unmarshal of message
+		var weatherData data.WeatherTelemetry
+		if err := proto.Unmarshal(messageValue, &weatherData); err != nil {
+			log.Println("unable to unmarshal message:", err)
+			log.Println("message was:", string(messageValue))
+		} else {
+			j, _ := json.MarshalIndent(weatherData, "", "\t")
+			log.Println(string(j))
+		}
+	})
 }

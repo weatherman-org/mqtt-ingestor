@@ -39,7 +39,7 @@ func (s *Session) Subscribe(topic string, callback paho.MessageHandler) error {
 	return nil
 }
 
-func (s *Session) Publish(message, topic string) error {
+func (s *Session) Publish(message []byte, topic string) error {
 	token := s.Client.Publish(topic, 0, false, message)
 	token.Wait()
 	if token.Error() != nil {
