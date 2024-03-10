@@ -11,7 +11,7 @@ import (
 func main() {
 	config, err := util.LoadEnv(".")
 	if err != nil {
-		log.Panic("unable to load env:", err)
+		log.Println("unable to load env:", err)
 	}
 
 	session, err := mqtt.NewSession(config.MQTT_ENDPOINT, config.MQTT_USERNAME, config.MQTT_PASSWORD)

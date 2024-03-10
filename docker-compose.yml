@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  emqx:
+    image: "emqx:latest"
+    ports:
+      - 18083:18083
+      - 1883:1883
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  mqtt-ingestor:
+    image: "papaya147/weatherman-mqtt-ingestor:latest"
+    restart: always
+    ports:
+      - 8080:8080
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      MQTT_ENDPOINT: tcp://emqx:1883
+      MQTT_USERNAME: admin
+      MQTT_PASSWORD: public
+      HTTP_PORT: 8080
