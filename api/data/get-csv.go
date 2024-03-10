@@ -3,10 +3,12 @@ package data
 import (
 	"bytes"
 	"encoding/csv"
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/weatherman-org/telemetry/util"
 )
 
@@ -32,7 +34,7 @@ func (c *Controller) getCsv(w http.ResponseWriter, r *http.Request) {
 	var startTimestamp int64 = 0
 	for {
 		telemetry, err := c.store.GetWeatherTelemetry(r.Context(), time.UnixMilli(startTimestamp))
-		if err != nil {
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			util.ErrorJson(w, err)
 			return
 		}
