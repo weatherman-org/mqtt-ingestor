@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
-	_ "github.com/weathermamn-org/telemetry/docs"
+	_ "github.com/weatherman-org/telemetry/docs"
 )
 
 func (s *Server) addRoutes() {

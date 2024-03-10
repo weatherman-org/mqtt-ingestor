@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	db "github.com/weathermamn-org/telemetry/db/sqlc"
-	"github.com/weathermamn-org/telemetry/mqtt"
-	"github.com/weathermamn-org/telemetry/util"
+	db "github.com/weatherman-org/telemetry/db/sqlc"
+	"github.com/weatherman-org/telemetry/mqtt"
+	"github.com/weatherman-org/telemetry/util"
 )
 
 type Server struct {

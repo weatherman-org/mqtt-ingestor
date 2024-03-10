@@ -1,4 +1,4 @@
-module github.com/weathermamn-org/telemetry
+module github.com/weatherman-org/telemetry
 
 go 1.20
 

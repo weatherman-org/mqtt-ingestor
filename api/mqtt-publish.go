@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/weathermamn-org/telemetry/data"
-	"github.com/weathermamn-org/telemetry/util"
+	"github.com/weatherman-org/telemetry/data"
+	"github.com/weatherman-org/telemetry/util"
 	"google.golang.org/protobuf/proto"
 )
 
