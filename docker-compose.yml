@@ -26,7 +26,7 @@ services:
       mode: replicated
       replicas: 1
 
-  telemetry:
+  server:
     image: "papaya147/weatherman-telemetry:latest"
     restart: always
     ports:
