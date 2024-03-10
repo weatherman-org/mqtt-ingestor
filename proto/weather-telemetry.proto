@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package data;
+
+option go_package = "./data";
+
+message WeatherTelemetry {
+    uint64 timestamp = 1;
+    double temperature = 2;
+    double humidity = 3;
+    double windSpeed = 4;
+    double windDirection = 5;
+    double pressure = 6;
+    double waterAmount = 7;
+}

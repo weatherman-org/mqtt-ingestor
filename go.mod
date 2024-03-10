@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.3
 	github.com/spf13/viper v1.18.2
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
