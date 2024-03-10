@@ -8,10 +8,10 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/weathermamn-org/mqtt-ingestor/cmd"
-	db "github.com/weathermamn-org/mqtt-ingestor/db/sqlc"
-	"github.com/weathermamn-org/mqtt-ingestor/mqtt"
-	"github.com/weathermamn-org/mqtt-ingestor/util"
+	"github.com/weathermamn-org/telemetry/cmd"
+	db "github.com/weathermamn-org/telemetry/db/sqlc"
+	"github.com/weathermamn-org/telemetry/mqtt"
+	"github.com/weathermamn-org/telemetry/util"
 )
 
 func main() {

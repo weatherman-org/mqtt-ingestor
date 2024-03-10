@@ -7,9 +7,9 @@ import (
 	"time"
 
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/weathermamn-org/mqtt-ingestor/data"
-	db "github.com/weathermamn-org/mqtt-ingestor/db/sqlc"
-	"github.com/weathermamn-org/mqtt-ingestor/mqtt"
+	"github.com/weathermamn-org/telemetry/data"
+	db "github.com/weathermamn-org/telemetry/db/sqlc"
+	"github.com/weathermamn-org/telemetry/mqtt"
 	"google.golang.org/protobuf/proto"
 )
 

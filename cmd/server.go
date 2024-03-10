@@ -9,10 +9,10 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
-	"github.com/weathermamn-org/mqtt-ingestor/data"
-	db "github.com/weathermamn-org/mqtt-ingestor/db/sqlc"
-	"github.com/weathermamn-org/mqtt-ingestor/mqtt"
-	"github.com/weathermamn-org/mqtt-ingestor/util"
+	"github.com/weathermamn-org/telemetry/data"
+	db "github.com/weathermamn-org/telemetry/db/sqlc"
+	"github.com/weathermamn-org/telemetry/mqtt"
+	"github.com/weathermamn-org/telemetry/util"
 	"google.golang.org/protobuf/proto"
 )
 

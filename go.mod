@@ -1,4 +1,4 @@
-module github.com/weathermamn-org/mqtt-ingestor
+module github.com/weathermamn-org/telemetry
 
 go 1.20
 
