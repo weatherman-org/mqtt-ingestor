@@ -8,7 +8,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/weathermamn-org/telemetry/cmd"
+	"github.com/weathermamn-org/telemetry/api"
 	db "github.com/weathermamn-org/telemetry/db/sqlc"
 	"github.com/weathermamn-org/telemetry/mqtt"
 	"github.com/weathermamn-org/telemetry/util"
@@ -40,12 +40,12 @@ func main() {
 	}
 	defer session.Disconnect(1000)
 
-	httpServer := cmd.NewServer(config, session, store)
+	httpServer := api.NewServer(config, session, store)
 	log.Println("starting the http server on port", config.HTTP_PORT, "...")
 	go httpServer.Start()
 
 	log.Println("starting the mqtt subscriber...")
-	if err := cmd.Subscribe(session, store); err != nil {
+	if err := mqtt.Subscribe(session, store); err != nil {
 		log.Panic("unable to subscribe: ", err)
 	}
 }

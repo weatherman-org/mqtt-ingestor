@@ -1,70 +1,13 @@
-package cmd
+package api
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
-	"github.com/go-chi/render"
 	"github.com/weathermamn-org/telemetry/data"
-	db "github.com/weathermamn-org/telemetry/db/sqlc"
-	"github.com/weathermamn-org/telemetry/mqtt"
 	"github.com/weathermamn-org/telemetry/util"
 	"google.golang.org/protobuf/proto"
 )
-
-type Server struct {
-	config      util.Config
-	mqttSession mqtt.Session
-	store       db.Querier
-	router      *chi.Mux
-}
-
-func NewServer(config util.Config, session mqtt.Session, store db.Querier) *Server {
-	s := &Server{
-		config:      config,
-		mqttSession: session,
-		store:       store,
-	}
-
-	s.addRoutes()
-
-	return s
-}
-
-func (s *Server) Start() error {
-	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%s", s.config.HTTP_PORT),
-		Handler: s.router,
-	}
-	return srv.ListenAndServe()
-}
-
-func (s *Server) addRoutes() {
-	router := chi.NewMux()
-
-	router.Use(
-		render.SetContentType(render.ContentTypeJSON),
-		middleware.StripSlashes,
-		middleware.Recoverer,
-		middleware.Heartbeat("/ping"),
-		cors.Handler(cors.Options{
-			AllowedOrigins:   []string{"https://*", "http://*"},
-			AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-			ExposedHeaders:   []string{"Link"},
-			AllowCredentials: true,
-			MaxAge:           300,
-		}),
-	)
-
-	router.Post("/publish", s.handlePublish)
-
-	s.router = router
-}
 
 type publishInput struct {
 	Topic         string  `json:"topic" validate:"required"`
@@ -76,7 +19,7 @@ type publishInput struct {
 	WaterAmount   float64 `json:"water_amount"`
 }
 
-func (s *Server) handlePublish(w http.ResponseWriter, r *http.Request) {
+func (s *Server) mqttPublish(w http.ResponseWriter, r *http.Request) {
 	var requestPayload publishInput
 	if err := util.ReadJsonAndValidate(w, r, &requestPayload); err != nil {
 		util.ErrorJson(w, err)

@@ -1,4 +1,4 @@
-package cmd
+package mqtt
 
 import (
 	"context"
@@ -9,11 +9,10 @@ import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/weathermamn-org/telemetry/data"
 	db "github.com/weathermamn-org/telemetry/db/sqlc"
-	"github.com/weathermamn-org/telemetry/mqtt"
 	"google.golang.org/protobuf/proto"
 )
 
-func Subscribe(session mqtt.Session, store db.Querier) error {
+func Subscribe(session Session, store db.Querier) error {
 	return session.Subscribe("topic/telemetry", func(client paho.Client, message paho.Message) {
 		messageValue := message.Payload()
 
