@@ -29,9 +29,8 @@ func (c *Controller) getCsv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dataCompleted := false
 	var startTimestamp int64 = 0
-	for !dataCompleted {
+	for {
 		telemetry, err := c.store.GetWeatherTelemetry(r.Context(), time.UnixMilli(startTimestamp))
 		if err != nil {
 			util.ErrorJson(w, err)
@@ -39,7 +38,6 @@ func (c *Controller) getCsv(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if len(telemetry) == 0 {
-			dataCompleted = true
 			break
 		}
 
