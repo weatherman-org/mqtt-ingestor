@@ -11,6 +11,8 @@ type Config struct {
 	MQTT_USERNAME string `mapstructure:"MQTT_USERNAME"`
 	MQTT_PASSWORD string `mapstructure:"MQTT_PASSWORD"`
 	HTTP_PORT     string `mapstructure:"HTTP_PORT"`
+	POSTGRES_DSN  string `mapstructure:"POSTGRES_DSN"`
+	MIGRATION_URL string `mapstructure:"MIGRATION_URL"`
 }
 
 func LoadEnv(path string) (config Config, err error) {
@@ -21,6 +23,8 @@ func LoadEnv(path string) (config Config, err error) {
 		MQTT_USERNAME: os.Getenv("MQTT_USERNAME"),
 		MQTT_PASSWORD: os.Getenv("MQTT_PASSWORD"),
 		HTTP_PORT:     os.Getenv("HTTP_PORT"),
+		POSTGRES_DSN:  os.Getenv("POSTGRES_DSN"),
+		MIGRATION_URL: os.Getenv("MIGRATION_URL"),
 	}
 	return
 }

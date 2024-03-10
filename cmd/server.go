@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
 	"github.com/weathermamn-org/mqtt-ingestor/data"
+	db "github.com/weathermamn-org/mqtt-ingestor/db/sqlc"
 	"github.com/weathermamn-org/mqtt-ingestor/mqtt"
 	"github.com/weathermamn-org/mqtt-ingestor/util"
 	"google.golang.org/protobuf/proto"
@@ -18,13 +19,15 @@ import (
 type Server struct {
 	config      util.Config
 	mqttSession mqtt.Session
+	store       db.Querier
 	router      *chi.Mux
 }
 
-func NewServer(config util.Config, session mqtt.Session) *Server {
+func NewServer(config util.Config, session mqtt.Session, store db.Querier) *Server {
 	s := &Server{
 		config:      config,
 		mqttSession: session,
+		store:       store,
 	}
 
 	s.addRoutes()

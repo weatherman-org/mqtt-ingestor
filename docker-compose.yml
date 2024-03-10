@@ -1,6 +1,21 @@
 version: "3"
 
 services:
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - 5432:5432
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: telemetry
+    volumes:
+      - ./postgres/:/var/lib/postgresql/data/
+
   emqx:
     image: "emqx:latest"
     ports:
@@ -24,3 +39,5 @@ services:
       MQTT_USERNAME: admin
       MQTT_PASSWORD: public
       HTTP_PORT: 8080
+      POSTGRES_DSN: postgresql://postgres:password@postgres:5432/telemetry?sslmode=disable
+      MIGRATION_URL: file://db/migration
