@@ -21,12 +21,11 @@ func main() {
 	defer session.Disconnect(1000)
 
 	httpServer := cmd.NewServer(config, session)
-	log.Println("started the http server on port", config.HTTP_PORT)
+	log.Println("starting the http server on port", config.HTTP_PORT)
 	go httpServer.Start()
 
+	log.Println("starting the mqtt subscriber")
 	if err := cmd.Subscribe(session); err != nil {
 		log.Panic("unable to subscribe: ", err)
-	} else {
-		log.Println("started the mqtt subscriber")
 	}
 }
