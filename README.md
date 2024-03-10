@@ -1,4 +1,4 @@
-# MQTT Ingestor
+# Telemetry Server
 
 ## Getting started
 
