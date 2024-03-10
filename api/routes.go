@@ -5,6 +5,8 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
+	_ "github.com/weathermamn-org/telemetry/docs"
 )
 
 func (s *Server) addRoutes() {
@@ -26,6 +28,7 @@ func (s *Server) addRoutes() {
 	)
 
 	router.Post("/publish", s.mqttPublish)
+	router.Mount("/swagger", httpSwagger.WrapHandler)
 
 	s.router = router
 }

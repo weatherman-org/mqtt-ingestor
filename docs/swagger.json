@@ -1,0 +1,97 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "The comprehensive list of all Weatherman Telemetry Server APIs",
+        "title": "Weatherman Telemetry Server APIs",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/publish": {
+            "post": {
+                "description": "Mock an MQTT weather publish, fields are formatted as Protobuf and sent via the MQTT broker",
+                "tags": [
+                    "mqtt"
+                ],
+                "summary": "Mock an MQTT weather publish",
+                "parameters": [
+                    {
+                        "description": "json",
+                        "name": "request-body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.publishModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.publishModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.publishModel": {
+            "type": "object",
+            "required": [
+                "topic"
+            ],
+            "properties": {
+                "humidity": {
+                    "type": "number"
+                },
+                "pressure": {
+                    "type": "number"
+                },
+                "temperature": {
+                    "type": "number"
+                },
+                "topic": {
+                    "type": "string"
+                },
+                "water_amount": {
+                    "type": "number"
+                },
+                "wind_direction": {
+                    "type": "number"
+                },
+                "wind_speed": {
+                    "type": "number"
+                }
+            }
+        },
+        "util.ErrorModel": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "something went wrong"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 400
+                }
+            }
+        }
+    }
+}

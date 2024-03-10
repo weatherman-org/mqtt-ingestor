@@ -14,6 +14,11 @@ import (
 	"github.com/weathermamn-org/telemetry/util"
 )
 
+// @title Weatherman Telemetry Server APIs
+// @version 1.0
+// @description The comprehensive list of all Weatherman Telemetry Server APIs
+// @host localhost:8080
+// @BasePath /
 func main() {
 	config, err := util.LoadEnv(".")
 	if err != nil {

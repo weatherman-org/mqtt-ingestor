@@ -3,21 +3,14 @@ package util
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"log"
 	"net/http"
 )
 
-type JsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
-	Data    any    `json:"data,omitempty"`
-}
-
 // ReadJsonAndValidate reads JSON from the request body and validates it.
 func ReadJsonAndValidate(w http.ResponseWriter, r *http.Request, data any) error {
-	if err := readJsonFromBody(w, r, data); err != nil {
+	if err := ReadJson(w, r, data); err != nil {
 		return err
 	}
 
@@ -29,7 +22,7 @@ func ReadJsonAndValidate(w http.ResponseWriter, r *http.Request, data any) error
 }
 
 // readJsonFromBody reads JSON from the request body
-func readJsonFromBody(w http.ResponseWriter, r *http.Request, data any) error {
+func ReadJson(w http.ResponseWriter, r *http.Request, data any) error {
 	// TODO - revert to 1 MB
 	maxBytes := 10 << 20 // one megabyte
 
@@ -38,12 +31,12 @@ func readJsonFromBody(w http.ResponseWriter, r *http.Request, data any) error {
 	dec := json.NewDecoder(r.Body)
 	err := dec.Decode(data)
 	if err != nil {
-		return errors.New("unable to decode JSON")
+		return ErrUnableToDecodeJSON
 	}
 
 	err = dec.Decode(&struct{}{})
 	if err != io.EOF {
-		return errors.New("invalid JSON format, must only have one body")
+		return ErrInputJSONMustOnlyHaveOneValue
 	}
 
 	return nil
@@ -61,6 +54,11 @@ func RebuildRequestBody(r *http.Request, data any) error {
 	r.Header.Set("Content-Type", "application/json")
 
 	return nil
+}
+
+type ErrorModel struct {
+	Message string `json:"message" example:"something went wrong"`
+	Status  int    `json:"status" example:"400"`
 }
 
 // WriteJson returns a JSON response.
@@ -86,8 +84,16 @@ func WriteJson(w http.ResponseWriter, status int, data any, headers ...http.Head
 
 // ErrorJson returns an error in JSON format.
 func ErrorJson(w http.ResponseWriter, err error) {
-	var payload JsonResponse
-	payload.Error = true
+	var payload ErrorModel
 	payload.Message = err.Error()
+	payload.Status = http.StatusBadRequest
+
+	statusCode, exists := CustomErrorType[err]
+	if exists {
+		payload.Status = statusCode
+		WriteJson(w, statusCode, payload)
+		return
+	}
+
 	WriteJson(w, http.StatusBadRequest, payload)
 }

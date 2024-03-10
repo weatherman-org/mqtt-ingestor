@@ -1,0 +1,65 @@
+basePath: /
+definitions:
+  api.publishModel:
+    properties:
+      humidity:
+        type: number
+      pressure:
+        type: number
+      temperature:
+        type: number
+      topic:
+        type: string
+      water_amount:
+        type: number
+      wind_direction:
+        type: number
+      wind_speed:
+        type: number
+    required:
+    - topic
+    type: object
+  util.ErrorModel:
+    properties:
+      message:
+        example: something went wrong
+        type: string
+      status:
+        example: 400
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: The comprehensive list of all Weatherman Telemetry Server APIs
+  title: Weatherman Telemetry Server APIs
+  version: "1.0"
+paths:
+  /publish:
+    post:
+      description: Mock an MQTT weather publish, fields are formatted as Protobuf
+        and sent via the MQTT broker
+      parameters:
+      - description: json
+        in: body
+        name: request-body
+        required: true
+        schema:
+          $ref: '#/definitions/api.publishModel'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.publishModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Mock an MQTT weather publish
+      tags:
+      - mqtt
+swagger: "2.0"

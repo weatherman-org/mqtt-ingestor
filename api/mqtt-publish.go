@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-type publishInput struct {
+type publishModel struct {
 	Topic         string  `json:"topic" validate:"required"`
 	Temperature   float64 `json:"temperature"`
 	Humidity      float64 `json:"humidity"`
@@ -19,8 +19,17 @@ type publishInput struct {
 	WaterAmount   float64 `json:"water_amount"`
 }
 
+// create godoc
+// @Summary      Mock an MQTT weather publish
+// @Description  Mock an MQTT weather publish, fields are formatted as Protobuf and sent via the MQTT broker
+// @Tags         mqtt
+// @Param        request-body body publishModel true "json"
+// @Success      200  {object} publishModel
+// @Failure      400  {object} util.ErrorModel
+// @Failure      500  {object} util.ErrorModel
+// @Router       /publish [post]
 func (s *Server) mqttPublish(w http.ResponseWriter, r *http.Request) {
-	var requestPayload publishInput
+	var requestPayload publishModel
 	if err := util.ReadJsonAndValidate(w, r, &requestPayload); err != nil {
 		util.ErrorJson(w, err)
 		return
