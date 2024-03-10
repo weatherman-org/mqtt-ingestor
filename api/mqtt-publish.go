@@ -10,13 +10,13 @@ import (
 )
 
 type publishModel struct {
-	Topic         string  `json:"topic" validate:"required"`
-	Temperature   float64 `json:"temperature"`
-	Humidity      float64 `json:"humidity"`
-	WindSpeed     float64 `json:"wind_speed"`
-	WindDirection float64 `json:"wind_direction"`
-	Pressure      float64 `json:"pressure"`
-	WaterAmount   float64 `json:"water_amount"`
+	Topic         string  `json:"topic" validate:"required" example:"topic/telemetry"`
+	Temperature   float64 `json:"temperature" example:"100"`
+	Humidity      float64 `json:"humidity" example:"50"`
+	WindSpeed     float64 `json:"wind_speed" example:"25"`
+	WindDirection float64 `json:"wind_direction" example:"60"`
+	Pressure      float64 `json:"pressure" example:"50"`
+	WaterAmount   float64 `json:"water_amount" example:"10"`
 }
 
 // create godoc

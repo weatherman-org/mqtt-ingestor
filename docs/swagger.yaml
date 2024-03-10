@@ -3,18 +3,25 @@ definitions:
   api.publishModel:
     properties:
       humidity:
+        example: 50
         type: number
       pressure:
+        example: 50
         type: number
       temperature:
+        example: 100
         type: number
       topic:
+        example: topic/telemetry
         type: string
       water_amount:
+        example: 10
         type: number
       wind_direction:
+        example: 60
         type: number
       wind_speed:
+        example: 25
         type: number
     required:
     - topic

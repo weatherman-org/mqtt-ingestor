@@ -64,25 +64,32 @@ const docTemplate = `{
             ],
             "properties": {
                 "humidity": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 50
                 },
                 "pressure": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 50
                 },
                 "temperature": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 100
                 },
                 "topic": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "topic/telemetry"
                 },
                 "water_amount": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 10
                 },
                 "wind_direction": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 60
                 },
                 "wind_speed": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 25
                 }
             }
         },
