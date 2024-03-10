@@ -1,7 +1,9 @@
 package util
 
 import (
-	"github.com/spf13/viper"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -12,19 +14,13 @@ type Config struct {
 }
 
 func LoadEnv(path string) (config Config, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("app")
-	viper.SetConfigType("env")
+	err = godotenv.Load(path + "/.env")
 
-	viper.AutomaticEnv()
-
-	if err = viper.ReadInConfig(); err != nil {
-		return
+	config = Config{
+		MQTT_ENDPOINT: os.Getenv("MQTT_ENDPOINT"),
+		MQTT_USERNAME: os.Getenv("MQTT_USERNAME"),
+		MQTT_PASSWORD: os.Getenv("MQTT_PASSWORD"),
+		HTTP_PORT:     os.Getenv("HTTP_PORT"),
 	}
-
-	if err = viper.Unmarshal(&config); err != nil {
-		return
-	}
-
 	return
 }
