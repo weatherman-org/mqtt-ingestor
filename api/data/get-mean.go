@@ -65,6 +65,11 @@ func (c *Controller) getMean(w http.ResponseWriter, r *http.Request) {
 		Output:  &yearlyMean,
 	})
 
+	if err := group.Run(); err != nil {
+		util.ErrorJson(w, err)
+		return
+	}
+
 	util.WriteJson(w, http.StatusOK, getMeanResponse{
 		DailyMean:   dailyMean,
 		WeeklyMean:  weeklyMean,
