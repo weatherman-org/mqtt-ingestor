@@ -47,21 +47,21 @@ func (c *Controller) getMean(w http.ResponseWriter, r *http.Request) {
 	var weeklyMean mean
 	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
-		Input:   "day",
+		Input:   "week",
 		Output:  &weeklyMean,
 	})
 
 	var monthlyMean mean
 	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
-		Input:   "day",
+		Input:   "month",
 		Output:  &monthlyMean,
 	})
 
 	var yearlyMean mean
 	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
-		Input:   "day",
+		Input:   "year",
 		Output:  &yearlyMean,
 	})
 
