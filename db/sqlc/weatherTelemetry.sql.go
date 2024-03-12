@@ -10,16 +10,62 @@ import (
 	"time"
 )
 
+const getMeanWeatherTelemetry = `-- name: GetMeanWeatherTelemetry :one
+SELECT AVG(temperature) AS temperature,
+    AVG(humidity) AS humidity,
+    AVG(windSpeed) AS windSpeed,
+    AVG(windDirection) AS windDirection,
+    AVG(pressure) AS pressure,
+    AVG(waterAmount) AS waterAmount
+FROM weatherTelemetry
+WHERE millis >= $1
+    and millis < $2
+LIMIT 1
+`
+
+type GetMeanWeatherTelemetryParams struct {
+	Millis   time.Time `json:"millis"`
+	Millis_2 time.Time `json:"millis_2"`
+}
+
+type GetMeanWeatherTelemetryRow struct {
+	Temperature   float64 `json:"temperature"`
+	Humidity      float64 `json:"humidity"`
+	Windspeed     float64 `json:"windspeed"`
+	Winddirection float64 `json:"winddirection"`
+	Pressure      float64 `json:"pressure"`
+	Wateramount   float64 `json:"wateramount"`
+}
+
+func (q *Queries) GetMeanWeatherTelemetry(ctx context.Context, arg GetMeanWeatherTelemetryParams) (GetMeanWeatherTelemetryRow, error) {
+	row := q.db.QueryRow(ctx, getMeanWeatherTelemetry, arg.Millis, arg.Millis_2)
+	var i GetMeanWeatherTelemetryRow
+	err := row.Scan(
+		&i.Temperature,
+		&i.Humidity,
+		&i.Windspeed,
+		&i.Winddirection,
+		&i.Pressure,
+		&i.Wateramount,
+	)
+	return i, err
+}
+
 const getWeatherTelemetry = `-- name: GetWeatherTelemetry :many
 SELECT millis, temperature, humidity, windspeed, winddirection, pressure, wateramount
 FROM weatherTelemetry
 WHERE millis > $1
 ORDER BY millis ASC
-LIMIT 100
+LIMIT $2
 `
 
-func (q *Queries) GetWeatherTelemetry(ctx context.Context, millis time.Time) ([]Weathertelemetry, error) {
-	rows, err := q.db.Query(ctx, getWeatherTelemetry, millis)
+type GetWeatherTelemetryParams struct {
+	Millis time.Time `json:"millis"`
+	Limit  int32     `json:"limit"`
+}
+
+func (q *Queries) GetWeatherTelemetry(ctx context.Context, arg GetWeatherTelemetryParams) ([]Weathertelemetry, error) {
+	rows, err := q.db.Query(ctx, getWeatherTelemetry, arg.Millis, arg.Limit)
 	if err != nil {
 		return nil, err
 	}

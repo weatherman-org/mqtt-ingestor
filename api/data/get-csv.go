@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
+	db "github.com/weatherman-org/telemetry/db/sqlc"
 	"github.com/weatherman-org/telemetry/util"
 )
 
@@ -33,7 +34,12 @@ func (c *Controller) getCsv(w http.ResponseWriter, r *http.Request) {
 
 	var startTimestamp int64 = 0
 	for {
-		telemetry, err := c.store.GetWeatherTelemetry(r.Context(), time.UnixMilli(startTimestamp))
+		args := db.GetWeatherTelemetryParams{
+			Millis: time.UnixMilli(startTimestamp),
+			// * fetching 100 at a time
+			Limit: 100,
+		}
+		telemetry, err := c.store.GetWeatherTelemetry(r.Context(), args)
 		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			util.ErrorJson(w, err)
 			return

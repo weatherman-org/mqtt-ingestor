@@ -26,6 +26,32 @@ definitions:
     required:
     - topic
     type: object
+  data.getMeanResponse:
+    properties:
+      daily_mean:
+        $ref: '#/definitions/data.mean'
+      monthly_mean:
+        $ref: '#/definitions/data.mean'
+      weekly_mean:
+        $ref: '#/definitions/data.mean'
+      yearly_mean:
+        $ref: '#/definitions/data.mean'
+    type: object
+  data.mean:
+    properties:
+      mean_humidity:
+        type: number
+      mean_pressure:
+        type: number
+      mean_temperature:
+        type: number
+      mean_water_amount:
+        type: number
+      mean_wind_direction:
+        type: number
+      mean_wind_speed:
+        type: number
+    type: object
   util.ErrorModel:
     properties:
       message:
@@ -57,6 +83,27 @@ paths:
           schema:
             $ref: '#/definitions/util.ErrorModel'
       summary: Get a CSV formatted file of all the MQTT data
+      tags:
+      - data
+  /data/mean:
+    get:
+      description: Get mean data for daily, weekly, monthly and yearly time frames
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/data.getMeanResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Get mean data for different time frames
       tags:
       - data
   /publish:

@@ -41,6 +41,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/data/mean": {
+            "get": {
+                "description": "Get mean data for daily, weekly, monthly and yearly time frames",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "data"
+                ],
+                "summary": "Get mean data for different time frames",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/data.getMeanResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
         "/publish": {
             "post": {
                 "description": "Mock an MQTT weather publish, fields are formatted as Protobuf and sent via the MQTT broker",
@@ -110,6 +142,46 @@ const docTemplate = `{
                 "wind_speed": {
                     "type": "number",
                     "example": 25
+                }
+            }
+        },
+        "data.getMeanResponse": {
+            "type": "object",
+            "properties": {
+                "daily_mean": {
+                    "$ref": "#/definitions/data.mean"
+                },
+                "monthly_mean": {
+                    "$ref": "#/definitions/data.mean"
+                },
+                "weekly_mean": {
+                    "$ref": "#/definitions/data.mean"
+                },
+                "yearly_mean": {
+                    "$ref": "#/definitions/data.mean"
+                }
+            }
+        },
+        "data.mean": {
+            "type": "object",
+            "properties": {
+                "mean_humidity": {
+                    "type": "number"
+                },
+                "mean_pressure": {
+                    "type": "number"
+                },
+                "mean_temperature": {
+                    "type": "number"
+                },
+                "mean_water_amount": {
+                    "type": "number"
+                },
+                "mean_wind_direction": {
+                    "type": "number"
+                },
+                "mean_wind_speed": {
+                    "type": "number"
                 }
             }
         },
