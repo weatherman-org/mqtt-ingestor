@@ -26,6 +26,23 @@ definitions:
     required:
     - topic
     type: object
+  data.getDataResponse:
+    properties:
+      humidity:
+        type: number
+      millis:
+        type: integer
+      pressure:
+        type: number
+      temperature:
+        type: number
+      water_amount:
+        type: number
+      wind_direction:
+        type: number
+      wind_speed:
+        type: number
+    type: object
   data.getMeanResponse:
     properties:
       daily_mean:
@@ -83,6 +100,40 @@ paths:
           schema:
             $ref: '#/definitions/util.ErrorModel'
       summary: Get a CSV formatted file of all the MQTT data
+      tags:
+      - data
+  /data/data:
+    get:
+      description: Get individual data for a ranged time frame
+      parameters:
+      - description: json
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: json
+        in: query
+        name: end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/data.getDataResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Get individual data for a ranged time frame
       tags:
       - data
   /data/mean:

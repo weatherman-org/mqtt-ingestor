@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	GetMeanWeatherTelemetry(ctx context.Context, arg GetMeanWeatherTelemetryParams) (GetMeanWeatherTelemetryRow, error)
 	GetWeatherTelemetry(ctx context.Context, arg GetWeatherTelemetryParams) ([]Weathertelemetry, error)
+	GetWeatherTelemetryByRange(ctx context.Context, arg GetWeatherTelemetryByRangeParams) ([]Weathertelemetry, error)
 	InsertWeatherTelemetry(ctx context.Context, arg InsertWeatherTelemetryParams) (Weathertelemetry, error)
 }
 

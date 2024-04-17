@@ -33,3 +33,9 @@ FROM weatherTelemetry
 WHERE millis >= $1
     and millis < $2
 LIMIT 1;
+-- name: GetWeatherTelemetryByRange :many
+SELECT *
+FROM weatherTelemetry
+WHERE millis >= $1
+    AND millis < $2
+ORDER BY millis ASC;

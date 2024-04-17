@@ -98,6 +98,47 @@ func (q *Queries) GetWeatherTelemetry(ctx context.Context, arg GetWeatherTelemet
 	return items, nil
 }
 
+const getWeatherTelemetryByRange = `-- name: GetWeatherTelemetryByRange :many
+SELECT millis, temperature, humidity, windspeed, winddirection, pressure, wateramount
+FROM weatherTelemetry
+WHERE millis >= $1
+    AND millis < $2
+ORDER BY millis ASC
+`
+
+type GetWeatherTelemetryByRangeParams struct {
+	Millis   time.Time `json:"millis"`
+	Millis_2 time.Time `json:"millis_2"`
+}
+
+func (q *Queries) GetWeatherTelemetryByRange(ctx context.Context, arg GetWeatherTelemetryByRangeParams) ([]Weathertelemetry, error) {
+	rows, err := q.db.Query(ctx, getWeatherTelemetryByRange, arg.Millis, arg.Millis_2)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Weathertelemetry{}
+	for rows.Next() {
+		var i Weathertelemetry
+		if err := rows.Scan(
+			&i.Millis,
+			&i.Temperature,
+			&i.Humidity,
+			&i.Windspeed,
+			&i.Winddirection,
+			&i.Pressure,
+			&i.Wateramount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const insertWeatherTelemetry = `-- name: InsertWeatherTelemetry :one
 INSERT INTO weatherTelemetry(
         millis,

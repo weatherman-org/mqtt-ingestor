@@ -23,6 +23,7 @@ func (c *Controller) Routes() *chi.Mux {
 
 	router.Get("/csv", c.getCsv)
 	router.Get("/mean", c.getMean)
+	router.Get("/data", c.getData)
 
 	return router
 }

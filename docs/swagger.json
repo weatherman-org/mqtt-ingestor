@@ -35,6 +35,57 @@
                 }
             }
         },
+        "/data/data": {
+            "get": {
+                "description": "Get individual data for a ranged time frame",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "data"
+                ],
+                "summary": "Get individual data for a ranged time frame",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "json",
+                        "name": "start",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "json",
+                        "name": "end",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/data.getDataResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
         "/data/mean": {
             "get": {
                 "description": "Get mean data for daily, weekly, monthly and yearly time frames",
@@ -136,6 +187,32 @@
                 "wind_speed": {
                     "type": "number",
                     "example": 25
+                }
+            }
+        },
+        "data.getDataResponse": {
+            "type": "object",
+            "properties": {
+                "humidity": {
+                    "type": "number"
+                },
+                "millis": {
+                    "type": "integer"
+                },
+                "pressure": {
+                    "type": "number"
+                },
+                "temperature": {
+                    "type": "number"
+                },
+                "water_amount": {
+                    "type": "number"
+                },
+                "wind_direction": {
+                    "type": "number"
+                },
+                "wind_speed": {
+                    "type": "number"
                 }
             }
         },

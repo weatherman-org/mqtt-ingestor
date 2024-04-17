@@ -38,28 +38,28 @@ type getMeanResponse struct {
 func (c *Controller) getMean(w http.ResponseWriter, r *http.Request) {
 	group := parallelize.NewSyncGroup()
 	var dailyMean mean
-	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
+	parallelize.AddOutputtingMethodWithArgs(group, c.selectMeanData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
 		Input:   "day",
 		Output:  &dailyMean,
 	})
 
 	var weeklyMean mean
-	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
+	parallelize.AddOutputtingMethodWithArgs(group, c.selectMeanData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
 		Input:   "week",
 		Output:  &weeklyMean,
 	})
 
 	var monthlyMean mean
-	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
+	parallelize.AddOutputtingMethodWithArgs(group, c.selectMeanData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
 		Input:   "month",
 		Output:  &monthlyMean,
 	})
 
 	var yearlyMean mean
-	parallelize.AddOutputtingMethodWithArgs(group, c.getData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
+	parallelize.AddOutputtingMethodWithArgs(group, c.selectMeanData, parallelize.OutputtingMethodWithArgsParams[string, *mean]{
 		Context: r.Context(),
 		Input:   "year",
 		Output:  &yearlyMean,
@@ -78,7 +78,7 @@ func (c *Controller) getMean(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (c *Controller) getData(ctx context.Context, timeframe string, out *mean) error {
+func (c *Controller) selectMeanData(ctx context.Context, timeframe string, out *mean) error {
 	var start, end time.Time
 	switch timeframe {
 	case "day":
